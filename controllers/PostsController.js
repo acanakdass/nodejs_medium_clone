@@ -36,5 +36,13 @@ class PostController extends BaseController {
             next(new ErrorResult(error.message))
         }
     }
+    getWithUser = async (req, res, next) => {
+        try {
+            var posts = await PostService.getWithUser()
+            res.json(posts);
+        } catch (error) {
+            next(new ErrorResult(error.message))
+        }
+    }
 }
 module.exports = new PostController()

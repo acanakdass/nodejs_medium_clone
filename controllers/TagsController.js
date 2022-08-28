@@ -1,4 +1,5 @@
 const BaseController = require("../core/controllers/BaseController");
+const { TagModel } = require("../models");
 const PostModel = require("../models/PostModel");
 const TagService = require("../services/TagService");
 

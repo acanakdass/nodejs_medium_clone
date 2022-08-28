@@ -10,11 +10,15 @@ class PostService extends BaseService {
     async getAllByUserId(userId) {
         try {
 
-            var res = await Models.PostModel.findAll({ where: { userId: userId } })
+            var res = await Models.PostModel.findAll({ where: { userId: userId }, include: Models.TagModel, })
             return new SuccessDataResult(res, Messages.LISTED())
         } catch (error) {
             return new ErrorResult(error.message)
         }
+    }
+    async getWithUser() {
+        var res = await Models.PostModel.findAll({ include: Models.UserModel })
+        return new SuccessDataResult(res)
     }
 }
 
