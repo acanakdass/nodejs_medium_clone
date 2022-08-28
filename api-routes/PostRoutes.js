@@ -10,10 +10,10 @@ const authenticateToken = require('../core/middlewares/authenticate')
 
 
 router.get("/", PostController.getAll)
-router.get("/getWithUser", PostController.getWithUser)
+router.get("/get-with-user", PostController.getWithUser)
 
 router.get("/bypage/:pageno/:pagesize", authenticateToken, PostController.getAllPaginated)
-router.get("/GetAllOfCurrentUser", authenticateToken, PostController.getAllOfCurrentUser)
+router.get("/getall-of-current-user", authenticateToken, PostController.getAllOfCurrentUser)
 router.post("/create", validate(PostValidations.addValidation), authenticateToken, PostController.add)
 
 module.exports = router
