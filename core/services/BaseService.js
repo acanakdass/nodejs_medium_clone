@@ -1,34 +1,77 @@
+const Messages = require("../../constants/Messages")
 const { PostModel } = require("../../models")
-const { ErrorResult } = require("../helpers/results")
+const { ErrorResult, SuccessDataResult } = require("../helpers/results")
 
 class BaseService {
     constructor(model) {
         this.model = model
     }
-    getAll(where) {
+    async getAll(where) {
         try {
-            return this.model.findAll(where || {})
+            var res = await this.model.findAll(where || {})
+            return new SuccessDataResult(res, Messages.LISTED())
+
         } catch (error) {
             return new ErrorResult(error.message)
         }
     }
-    add(data) {
+    async getAllPaginated(pageno, pagesize) {
         try {
-            return this.model.create(data)
+            let offsetVal = (pageno - 1) * pagesize
+            let limitVal = pagesize
+            console.log("offsett:: " + offsetVal)
+            var res = await this.model.findAll({ order: [['createdAt', 'DESC']], offset: offsetVal, limit: limitVal, raw: true })
+            console.log("ress*************************************************************************------***")
+            console.log(res)
+            return new SuccessDataResult(res, Messages.LISTED())
+
+        } catch (error) {
+            return new ErrorResult(error.message)
+        }
+    }
+    async add(data) {
+        try {
+            var res = await this.model.create(data)
+            console.log(res)
+            return new SuccessDataResult(res, Messages.CREATED())
         } catch (error) {
             return new ErrorResult(error.message)
         }
     }
 
-    update(data, id) {
-        return this.model.findByIdAndUpdate(id, data, { new: true })
+    async update(data, id) {
+        try {
+            var res = await this.model.findByIdAndUpdate(id, data, { new: true })
+            return new SuccessDataResult(res, Messages.UPDATED())
+        } catch (error) {
+            return new ErrorResult(error.message)
+        }
     }
 
     getById(id) {
-        return this.model.findById(id)
+        try {
+            var res = this.model.findByPk(id)
+            return new SuccessDataResult(res, Messages.LISTED())
+
+        } catch (error) {
+            return new ErrorResult(error.message)
+        }
+
     }
     delete(id) {
-        return this.model.findByIdAndRemove(id)
+
+        try {
+            var res = this.model.destroy({
+                where: {
+                    id: id
+                }
+            })
+            return new SuccessDataResult(res, Messages.DELETED())
+
+        } catch (error) {
+            return new ErrorResult(error.message)
+        }
+
     }
 }
 

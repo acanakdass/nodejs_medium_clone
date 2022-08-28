@@ -5,10 +5,13 @@ const validate = require('../core/middlewares/validate')
 const UsersController = require('../controllers/UsersController')
 const PostController = require('../controllers/PostsController')
 const PostValidations = require('../validations/PostValidations')
+const authenticateToken = require('../core/middlewares/authenticate')
 
 
 
 router.get("/", PostController.getAll)
-router.post("/create", validate(PostValidations.addValidation), PostController.add)
+router.get("/bypage/:pageno/:pagesize", authenticateToken, PostController.getAllPaginated)
+router.get("/GetAllOfCurrentUser", authenticateToken, PostController.getAllOfCurrentUser)
+router.post("/create", validate(PostValidations.addValidation), authenticateToken, PostController.add)
 
 module.exports = router

@@ -22,6 +22,14 @@ class AuthController {
             next(new ErrorResult(error.message))
         }
     }
+
+    resetPassword = async (req, res, next) => {
+        try {
+
+        } catch (error) {
+
+        }
+    }
 }
 
 module.exports = new AuthController()

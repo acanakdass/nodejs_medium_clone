@@ -9,8 +9,6 @@ class BaseController {
     add = async (req, res, next) => {
         try {
             const result = await this.service.add(req.body)
-            console.log("result::::::::")
-            console.log(result)
             res.json(new SuccessDataResult(result, Messages.CREATED))
         } catch (error) {
             next(new ErrorResult(error.message))
@@ -19,7 +17,7 @@ class BaseController {
     getAll = async (req, res, next) => {
         try {
             const result = await this.service.getAll()
-            res.json(new SuccessDataResult(result, Messages.LISTED()))
+            res.json(result)
         } catch (error) {
             next(new ErrorResult(error.message))
         }
@@ -50,9 +48,21 @@ class BaseController {
         try {
             let id = req.params?.id
             const result = await this.service.delete(id)
-            res.json(new SuccessResult(Messages.DELETED))
+            res.json("Ok")
         } catch (error) {
             next(new ErrorResult(error.message))
+        }
+    }
+
+    getAllPaginated = async (req, res, next) => {
+        try {
+            let pageNo = req.params.pageno
+            let pageSize = req.params.pagesize
+            var result = await this.service.getAllPaginated(pageNo, pageSize)
+            res.json(result)
+        } catch (error) {
+            next(new ErrorResult(error.message))
+
         }
     }
 

@@ -14,7 +14,7 @@ const PostModel = sequelize.define("post", {
         type: DataTypes.TEXT,
         allowNull: true
     }
-}, { timestamps: false, tableName: 'posts' })
+}, { timestamps: true, tableName: 'posts' })
 
 
 
