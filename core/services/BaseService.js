@@ -16,7 +16,6 @@ class BaseService {
         try {
             return this.model.create(data)
         } catch (error) {
-
             return new ErrorResult(error.message)
         }
     }

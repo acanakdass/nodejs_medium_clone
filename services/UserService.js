@@ -1,3 +1,5 @@
+const Messages = require("../constants/Messages")
+const { SuccessDataResult } = require("../core/helpers/results")
 const BaseService = require("../core/services/BaseService")
 const Models = require("../models")
 
@@ -5,12 +7,9 @@ class UserService extends BaseService {
     constructor() {
         super(Models.UserModel)
     }
-    login(credentials) {
-        return Models.UserModel.findOne({ where: credentials })
-    }
-    resetPassword(email) {
-        //reset password
-        //var newPassword = UUID
+    getByEmail = async (email) => {
+        var user = await Models.UserModel.findOne({ where: { email: email } })
+        return new SuccessDataResult(user, Messages.LISTED())
     }
 }
 

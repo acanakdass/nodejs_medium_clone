@@ -7,19 +7,6 @@ const UserService = require("../services/UserService")
 const { hashPassword } = require("../core/helpers/securityHelpers")
 
 async function main() {
-    sequelize.define("post_tag", {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            // autoIncrement: true
-        }
-    }, { timestamps: false, tableName: 'post_tags' })
-
-    console.log('index file works')
-    PostModel.belongsToMany(TagModel, { through: "post_tags" })
-    TagModel.belongsToMany(PostModel, { through: "post_tags" })
-    await sequelize.sync()
-
     //seed admin user
     const seedAdminUser = () => {
 
@@ -38,14 +25,13 @@ async function main() {
         })
 
     }
-    // const users = await UserService.getAll()
-    // if (users.length == 0) {
-    //     //seedAdminUser()
-    // }
-
+    const users = await UserService.getAll()
+    if (users.length == 0) {
+        seedAdminUser()
+    }
 }
 
-main()
+// main()
 
 module.exports = {
     PostModel,

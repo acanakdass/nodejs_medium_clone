@@ -17,29 +17,6 @@ class UsersController extends BaseController {
             next(new ErrorResult(err))
         })
     }
-
-    login(req, res, next) {
-        req.body.password = hashPassword(req.body.password)
-        UserService.login(req.body).then(response => {
-            if (!response) {
-                next(new ErrorResult(Messages.WRONG_CREDENTIALS))
-
-            } else {
-                let data = {
-                    ...response.dataValues,
-                    tokens: {
-                        access_token: generateAccessToken({ response }),
-                        refresh_token: generateRefreshToken(response)
-                    }
-                }
-                res.status(httpStatus.OK).json(data)
-            }
-        }).catch(err => {
-            console.log(err)
-            next(new ErrorResult(err.message))
-        })
-    }
-
     resetPassword(req, res) {
         "use strict";
         const nodemailer = require("nodemailer");
