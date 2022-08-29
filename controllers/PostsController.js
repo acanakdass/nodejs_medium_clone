@@ -17,12 +17,16 @@ class PostController extends BaseController {
     }
     add = async (req, res, next) => {
         try {
-            console.log("-----------------------------------req.user--------------------------------------------------------------------")
-            console.log(req.user)
-            console.log("-----------------------------------req.user--------------------------------------------------------------------")
             req.body.userId = req.user.id
-            console.log(req.body)
             const result = await this.service.add(req.body)
+            res.json(result)
+        } catch (error) {
+            next(new ErrorResult(error.message))
+        }
+    }
+    AddTagToPost = async (req, res, next) => {
+        try {
+            const result = await PostService.AddTagToPost(req.body)
             res.json(result)
         } catch (error) {
             next(new ErrorResult(error.message))

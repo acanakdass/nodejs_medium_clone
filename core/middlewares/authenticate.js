@@ -11,9 +11,6 @@ const authenticateToken = (req, res, next) => {
         if (err) {
             return res.status(httpStatus.FORBIDDEN).send({ error: err.message })
         }
-        console.log("decodedUsr****************************************************************************************************************")
-        console.log(decodedUsr.dataValues)
-        console.log("decodedUsr****************************************************************************************************************")
         req.user = decodedUsr.dataValues
         next()
     })

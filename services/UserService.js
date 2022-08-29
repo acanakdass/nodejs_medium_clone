@@ -4,6 +4,7 @@ const BaseService = require("../core/services/BaseService")
 const Models = require("../models")
 const uuid = require('uuid')
 const { hashPassword } = require("../core/helpers/securityHelpers")
+const eventEmitter = require("../scripts/events/eventEmitter")
 class UserService extends BaseService {
     constructor() {
         super(Models.UserModel)
@@ -24,7 +25,12 @@ class UserService extends BaseService {
                 const hashedNewPw = hashPassword(generatedPw)
                 var updateRes = await this.update({ ...user.data.dataValues, password: hashedNewPw })
                 if (updateRes.success) {
-                    return new SuccessDataResult(email + " kullanıcısının şifresi güncellendi : " + generatedPw)
+                    eventEmitter.emit("send_email", {
+                        to: email, // list of receivers
+                        subject: "Şifre Sıfırlama Talebi", // Subject line
+                        html: "Your password has been reset! <b>Remember to change your password after login.</b> New password: " + generatedPw
+                    })
+                    return new SuccessDataResult("Şifre güncelleme işlemi başarılı, yeni şifreniz email adresinize gönderildi. Yeni şifre: " + generatedPw)
                 }
                 return new ErrorResult(updateRes.message)
             }

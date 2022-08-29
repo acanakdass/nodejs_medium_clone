@@ -15,5 +15,6 @@ router.get("/get-with-user", PostController.getWithUser)
 router.get("/bypage/:pageno/:pagesize", authenticateToken, PostController.getAllPaginated)
 router.get("/getall-of-current-user", authenticateToken, PostController.getAllOfCurrentUser)
 router.post("/create", validate(PostValidations.addValidation), authenticateToken, PostController.add)
+router.post("/add-tag-to-post", authenticateToken,/* validate(PostValidations.addValidation),*/ PostController.AddTagToPost)
 
 module.exports = router
