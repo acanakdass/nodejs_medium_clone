@@ -15,13 +15,17 @@ class PostService extends BaseService {
 
             var res = await Models.PostModel.findAll(
                 {
-                    where:
-                        { userId: userId },
+                    where: {
+                        userId: userId
+                    },
                     include: [
                         {
                             model: Models.TagModel,
                             through: { attributes: [] }//dont include junction table columns
-                        }],
+                        },
+                        {
+                            model: Models.CommentModel,
+                        }]
                 }
             )
             return new SuccessDataResult(res, Messages.LISTED())
@@ -29,8 +33,32 @@ class PostService extends BaseService {
             return new ErrorResult(error.message)
         }
     }
-    async getWithUser() {
-        var res = await Models.PostModel.findAll({ include: Models.UserModel })
+    async getAllWithAssociations() {
+        var res = await Models.PostModel.findAll(
+            {
+                attributes: { exclude: ['userId'] },
+                include: [
+                    {
+                        model: Models.CommentModel,
+                        attributes: {
+                            exclude: ['postId', 'userId'],
+                        },
+                        include: [
+                            {
+                                model: Models.UserModel,
+                                attributes: {
+                                    exclude: ['password', 'createdAt', 'updatedAt']
+                                }
+                            }]
+                    },
+                    {
+                        model: Models.UserModel
+                    },
+                    {
+                        model: Models.TagModel,
+                    }
+                ]
+            })
         return new SuccessDataResult(res)
     }
 

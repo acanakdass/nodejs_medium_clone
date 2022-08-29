@@ -1,6 +1,7 @@
 const UserModel = require("./UserModel")
 const PostModel = require("./PostModel")
 const TagModel = require("./TagModel")
+const CommentModel = require("./CommentModel")
 const { sequelize } = require("../core/loaders/db")
 const { DataTypes } = require("sequelize")
 const UserService = require("../services/UserService")
@@ -36,5 +37,6 @@ async function main() {
 module.exports = {
     PostModel,
     UserModel,
+    CommentModel,
     TagModel
 }

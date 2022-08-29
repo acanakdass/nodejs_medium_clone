@@ -8,6 +8,7 @@ class BaseController {
     }
     add = async (req, res, next) => {
         try {
+            req.body.userId = req.user.id ?? null
             const result = await this.service.add(req.body)
             res.json(new SuccessDataResult(result, Messages.CREATED))
         } catch (error) {
