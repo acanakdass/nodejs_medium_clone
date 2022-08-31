@@ -4,7 +4,6 @@ const { ErrorResult, SuccessDataResult, SuccessResult } = require("../helpers/re
 class BaseController {
     constructor(serviceType) {
         this.service = serviceType
-        console.log(arguments)
     }
     add = async (req, res, next) => {
         try {

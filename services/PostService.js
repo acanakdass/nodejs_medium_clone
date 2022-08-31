@@ -3,6 +3,7 @@ const Messages = require("../constants/Messages")
 const { ErrorResult, SuccessDataResult, SuccessResult } = require("../core/helpers/results")
 const { sequelize } = require("../core/loaders/db")
 const BaseService = require("../core/services/BaseService")
+const RedisService = require("../core/services/RedisService")
 const Models = require("../models")
 
 class PostService extends BaseService {
@@ -34,6 +35,12 @@ class PostService extends BaseService {
         }
     }
     async getAllWithAssociations() {
+        let redisResponse = await RedisService.GetStringValueByKeyAsync('posts/getAllWithAssociations')
+        if (redisResponse != null) {
+            console.log('response from redis cache..')
+            return new SuccessDataResult(JSON.parse(redisResponse))
+        }
+
         var res = await Models.PostModel.findAll(
             {
                 attributes: { exclude: ['userId'] },
@@ -59,6 +66,10 @@ class PostService extends BaseService {
                     }
                 ]
             })
+        RedisService.SetStringKeyValueAsync('posts/getAllWithAssociations', JSON.stringify(res)).then(res => {
+            console.log('-----------------set data to redis cache-----------------')
+        })
+        console.log('-----------------res from api-----------------')
         return new SuccessDataResult(res)
     }
 

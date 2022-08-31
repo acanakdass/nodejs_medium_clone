@@ -1,5 +1,5 @@
 const db = require("./db.js")
-
+const redis = require("./redis")
 module.exports = () => {
-    db.connectDB()
+    db.connectDB(), redis.connectRedis()
 }
