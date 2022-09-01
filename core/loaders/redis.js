@@ -4,6 +4,7 @@ const redisClient = redis.createClient()
 
 const connectRedis = () => {
 
+    redisClient.on('error', (err) => console.log(err))
     if (redisClient.isOpen == false) {
 
         redisClient.connect().then(res => {

@@ -17,7 +17,10 @@ class BaseController {
     getAll = async (req, res, next) => {
         try {
             const result = await this.service.getAll()
+            res.locals.dataToCache = JSON.stringify(result)
             res.json(result)
+            next()
+
         } catch (error) {
             next(new ErrorResult(error.message))
         }

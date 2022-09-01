@@ -7,13 +7,16 @@ const PostController = require('../controllers/PostsController')
 const PostValidations = require('../validations/PostValidations')
 const authenticateToken = require('../core/middlewares/authenticate')
 
+const afterResponse = require('../core/middlewares/afterResponse')
+const cacheMW = require('../core/middlewares/cache')
 
 
-router.get("/", PostController.getAll)
-router.get("/get-with-associatons", PostController.getWithUser)
+
+router.get("/", cacheMW, PostController.getAll)
+router.get("/get-with-associations", authenticateToken, cacheMW, PostController.getAllWithAssociations)
 
 router.get("/bypage/:pageno/:pagesize", authenticateToken, PostController.getAllPaginated)
-router.get("/get-all-of-current-user", authenticateToken, PostController.getAllOfCurrentUser)
+router.get("/get-all-of-current-user", authenticateToken, cacheMW, PostController.getAllOfCurrentUser)
 router.post("/create", validate(PostValidations.addValidation), authenticateToken, PostController.add)
 router.post("/add-tag-to-post", authenticateToken, validate(PostValidations.addTagToPostValidation), PostController.AddTagToPost)
 

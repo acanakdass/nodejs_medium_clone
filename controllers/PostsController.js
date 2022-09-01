@@ -40,10 +40,12 @@ class PostController extends BaseController {
             next(new ErrorResult(error.message))
         }
     }
-    getWithUser = async (req, res, next) => {
+    getAllWithAssociations = async (req, res, next) => {
         try {
-            var posts = await PostService.getAllWithAssociations()
-            res.json(posts);
+            var result = await PostService.getAllWithAssociations()
+            res.locals.dataToCache = JSON.stringify(result)
+            res.json(result);
+            next()
         } catch (error) {
             next(new ErrorResult(error.message))
         }

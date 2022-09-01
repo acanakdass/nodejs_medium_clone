@@ -34,14 +34,10 @@ class PostService extends BaseService {
             return new ErrorResult(error.message)
         }
     }
-    async getAllWithAssociations() {
-        let redisResponse = await RedisService.GetStringValueByKeyAsync('posts/getAllWithAssociations')
-        if (redisResponse != null) {
-            console.log('response from redis cache..')
-            return new SuccessDataResult(JSON.parse(redisResponse))
-        }
 
-        var res = await Models.PostModel.findAll(
+    async getAllWithAssociations() {
+
+        var result = await Models.PostModel.findAll(
             {
                 attributes: { exclude: ['userId'] },
                 include: [
@@ -66,11 +62,9 @@ class PostService extends BaseService {
                     }
                 ]
             })
-        RedisService.SetStringKeyValueAsync('posts/getAllWithAssociations', JSON.stringify(res)).then(res => {
-            console.log('-----------------set data to redis cache-----------------')
-        })
-        console.log('-----------------res from api-----------------')
-        return new SuccessDataResult(res)
+
+        // await RedisService.SetStringKeyValueAsyncEx(req.originalUrl, JSON.stringify(res), 120)
+        return new SuccessDataResult(result)
     }
 
     async AddTagToPost(data) {

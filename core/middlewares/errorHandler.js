@@ -3,7 +3,7 @@ const Logger = require("../helpers/loggers/Logger")
 const errorHandler = (err, req, res, next) => {
     console.log("err handler middleware..")
     console.log(err.message)
-    res.status(500).json(err)
+    return res.status(500).json(err)
     // Logger('base').log({
     //     level: "error",
     //     message: err

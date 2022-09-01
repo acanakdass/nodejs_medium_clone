@@ -3,6 +3,7 @@ class Result {
     constructor(message, success) {
         this.message = message;
         this.success = success;
+        this.dataSource = 'database'
     }
 
 }

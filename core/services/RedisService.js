@@ -8,9 +8,15 @@ class RedisService {
                 .catch(err => reject(err))
         })
     }
-    SetStringKeyValueAsyncEx = (key, value, exMiliseconds) => {
+    SetStringKeyValueExAsync = (key, value, exSeconds) => {
+        console.log('key in redisservice: ' + key)
+        console.log('key in redisservice: ' + key)
+        console.log('key in redisservice: ' + key)
+        console.log('key in redisservice: ' + key)
+        console.log('key in redisservice: ' + key)
+        console.log('key in redisservice: ' + key)
         return new Promise((resolve, reject) => {
-            redisClient.SETEX(key, exMiliseconds, value)
+            redisClient.SETEX('asd', exSeconds, value)
                 .then(res => resolve(res))
                 .catch(err => reject(err))
         })
@@ -65,6 +71,14 @@ class RedisService {
             }).catch(err => {
                 reject(err)
             })
+        })
+    }
+    IsExists(key) {
+        return new Promise((resolve, reject) => {
+            redisClient.EXISTS(key.toString())
+                .then(res => {
+                    resolve(res)
+                }).catch(err => { console.log(err); reject(err) })
         })
     }
 }

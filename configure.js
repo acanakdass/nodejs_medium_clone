@@ -16,7 +16,9 @@ const Configure = (app, express) => {
     app.use(express.json())
     app.use(helmet())
     middlewares.routerMiddleware(app)
+    app.use(coreMiddlewares.afterResponse)
     app.use(coreMiddlewares.errorHandler)
+
 }
 
 module.exports = Configure
