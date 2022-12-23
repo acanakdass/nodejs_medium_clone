@@ -36,7 +36,7 @@ class BaseService {
 
     async update(data) {
         try {
-            var res = await UserModel.update(data, {
+            var res = await this.model.update(data, {
                 where: {
                     id: data.id
                 }
